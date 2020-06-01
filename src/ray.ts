@@ -19,7 +19,7 @@ class ray extends eui.UILayer {
 		this.button.x = this.button.y = 0;
 		this.addChild(this.button);
 		this.button.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonClick, this);
-		// Main.rayEvent.addEventListener(Main.CLICK_BUTTON, this.onclick, this);
+		Main.rayEvent.addEventListener(Main.CLICK_BUTTON, this.onclick, this);
 	}
 	private onclick(e: egret.Event): void {
 		// console.log("444")
@@ -31,6 +31,7 @@ class ray extends eui.UILayer {
 		this.button.touchEnabled = false;
 		if (this.isCount > 0) {
 			this.button.label = this.isCount + "";
+			(<eui.Label>this.button.labelDisplay).textColor = 0x0000ff;
 		} else {
 			this.button.label = "空";
 			Main.rayEvent.dispatchEventWith(Main.CLICK_BUTTON, false, [this.ePointx, this.ePointy]);
@@ -69,10 +70,12 @@ class ray extends eui.UILayer {
 		this.button.touchEnabled = false;
 		if (this.isray(this.ePointx, this.ePointy)) {
 			this.button.label = "雷";
+			(<eui.Label>this.button.labelDisplay).textColor = 0xff0000;
 			return;
 		}
 		if (this.isCount > 0) {
 			this.button.label = this.isCount + "";
+			(<eui.Label>this.button.labelDisplay).textColor = 0x0000ff;
 			return;
 		}
 		this.button.label = "空";

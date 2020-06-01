@@ -162,18 +162,19 @@ var Main = (function (_super) {
         });
     };
     Main.prototype.createGameScene = function () {
-        this.dArray();
+        var lineNumber = Math.round(this.stage.stageWidth / Main.rayWidth) - 1;
+        var columnNumber = Math.round(this.stage.stageHeight / Main.rayHeight) - 1;
+        this.dArray(lineNumber, columnNumber);
         Main.rayEvent = new RayEvent();
-        for (var i = 0; i < 30; i++) {
-            for (var j = 0; j < 30; j++) {
+        for (var i = 0; i < lineNumber; i++) {
+            for (var j = 0; j < columnNumber; j++) {
                 this.addChild(new ray(i, j));
             }
         }
     };
-    Main.prototype.dArray = function (line, column, ray) {
+    Main.prototype.dArray = function (line, column) {
         if (line === void 0) { line = 30; }
         if (column === void 0) { column = 30; }
-        if (ray === void 0) { ray = 10; }
         // var arr: any[][] = [];
         // for (let i = 0; i < line; i++) {
         //     arr.push(new Array<any>());
@@ -183,6 +184,7 @@ var Main = (function (_super) {
         // }
         // console.log(arr)
         var a = [], x, y;
+        var ray = line * column * 0.15;
         while (a.length < ray) {
             x = this.randomRangeInt(0, line);
             y = this.randomRangeInt(0, column);

@@ -28,7 +28,7 @@ var ray = (function (_super) {
         this.button.x = this.button.y = 0;
         this.addChild(this.button);
         this.button.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonClick, this);
-        // Main.rayEvent.addEventListener(Main.CLICK_BUTTON, this.onclick, this);
+        Main.rayEvent.addEventListener(Main.CLICK_BUTTON, this.onclick, this);
     };
     ray.prototype.onclick = function (e) {
         // console.log("444")
@@ -40,6 +40,7 @@ var ray = (function (_super) {
         this.button.touchEnabled = false;
         if (this.isCount > 0) {
             this.button.label = this.isCount + "";
+            this.button.labelDisplay.textColor = 0x0000ff;
         }
         else {
             this.button.label = "空";
@@ -79,10 +80,12 @@ var ray = (function (_super) {
         this.button.touchEnabled = false;
         if (this.isray(this.ePointx, this.ePointy)) {
             this.button.label = "雷";
+            this.button.labelDisplay.textColor = 0xff0000;
             return;
         }
         if (this.isCount > 0) {
             this.button.label = this.isCount + "";
+            this.button.labelDisplay.textColor = 0x0000ff;
             return;
         }
         this.button.label = "空";

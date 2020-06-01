@@ -105,16 +105,18 @@ class Main extends eui.UILayer {
     public static readonly CLICK_BUTTON: string = "CLICK_BUTTON";
     public static rayEvent: RayEvent;
     protected createGameScene(): void {
-        this.dArray();
+        var lineNumber = Math.round(this.stage.stageWidth / Main.rayWidth) - 1;
+        var columnNumber = Math.round(this.stage.stageHeight / Main.rayHeight) - 1;
+        this.dArray(lineNumber, columnNumber);
         Main.rayEvent = new RayEvent();
-        for (let i = 0; i < 30; i++) {
-            for (let j = 0; j < 30; j++) {
+        for (let i = 0; i < lineNumber; i++) {
+            for (let j = 0; j < columnNumber; j++) {
                 this.addChild(new ray(i, j));
             }
         }
     }
     public static rayArray: number[][] = [];
-    private dArray(line: number = 30, column: number = 30, ray: number = 10): void {
+    private dArray(line: number = 30, column: number = 30): void {
         // var arr: any[][] = [];
         // for (let i = 0; i < line; i++) {
         //     arr.push(new Array<any>());
@@ -124,6 +126,7 @@ class Main extends eui.UILayer {
         // }
         // console.log(arr)
         var a: number[][] = [], x: number, y: number;
+        var ray = line * column * 0.15;
         while (a.length < ray) {
             x = this.randomRangeInt(0, line);
             y = this.randomRangeInt(0, column);
