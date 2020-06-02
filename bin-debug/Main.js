@@ -161,39 +161,129 @@ var Main = (function (_super) {
             }, _this);
         });
     };
+    // private aryArr: ray[][];
     Main.prototype.createGameScene = function () {
         var lineNumber = Math.round(this.stage.stageWidth / Main.rayWidth) - 1;
         var columnNumber = Math.round(this.stage.stageHeight / Main.rayHeight) - 1;
         this.dArray(lineNumber, columnNumber);
         Main.rayEvent = new RayEvent();
+        // this.aryArr = [];
         for (var i = 0; i < lineNumber; i++) {
+            // this.aryArr.push(new Array())
             for (var j = 0; j < columnNumber; j++) {
+                // this.aryArr[i][j] = new ray(i, j, this.digui.bind(this))
                 this.addChild(new ray(i, j));
             }
         }
     };
+    // private digui(x, y): void {
+    //     if (x < 0 || y < 0 || !this.aryArr[x][y]) { return }
+    //     let num = Main.isCount(x - 1, y - 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x - 1, y - 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+    //     num = Main.isCount(x - 1, y);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x - 1, y);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+    //     num = Main.isCount(x - 1, y + 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x - 1, y + 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+    //     num = Main.isCount(x, y + 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x, y + 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+    //     num = Main.isCount(x + 1, y + 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x + 1, y + 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+    //     num = Main.isCount(x + 1, y);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x + 1, y);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+    //     num = Main.isCount(x + 1, y - 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x + 1, y - 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+    //     num = Main.isCount(x, y - 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x, y - 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+    // }
+    Main.isray = function (x, y) {
+        for (var i = 0; i < Main.rayArray.length; i++) {
+            if (x == Main.rayArray[i][0] && y == Main.rayArray[i][1]) {
+                return true;
+            }
+        }
+        return false;
+    };
+    Main.isCount = function (x, y) {
+        var num = 0;
+        if (Main.isray(x - 1, y - 1)) {
+            num++;
+        }
+        if (Main.isray(x - 1, y)) {
+            num++;
+        }
+        if (Main.isray(x - 1, y + 1)) {
+            num++;
+        }
+        if (Main.isray(x, y + 1)) {
+            num++;
+        }
+        if (Main.isray(x + 1, y + 1)) {
+            num++;
+        }
+        if (Main.isray(x + 1, y)) {
+            num++;
+        }
+        if (Main.isray(x + 1, y - 1)) {
+            num++;
+        }
+        if (Main.isray(x, y - 1)) {
+            num++;
+        }
+        return num;
+    };
     Main.prototype.dArray = function (line, column) {
         if (line === void 0) { line = 30; }
         if (column === void 0) { column = 30; }
-        // var arr: any[][] = [];
-        // for (let i = 0; i < line; i++) {
-        //     arr.push(new Array<any>());
-        //     for (let j = 0; j < column; j++) {
-        //         arr[i].push({ i, j })
-        //     }
-        // }
-        // console.log(arr)
         var a = [], x, y;
-        var ray = line * column * 0.15;
+        var ray = line * column * 0.18;
         while (a.length < ray) {
-            x = this.randomRangeInt(0, line);
-            y = this.randomRangeInt(0, column);
+            x = this.randomRangeInt(0, line - 1);
+            y = this.randomRangeInt(0, column - 1);
             if (a.indexOf([x, y]) == -1) {
                 a.push([x, y]);
             }
         }
         Main.rayArray = a;
-        console.log(Main.rayArray);
     };
     Main.prototype.randomRangeInt = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -253,6 +343,7 @@ var Main = (function (_super) {
     Main.rayWidth = 40;
     Main.rayHeight = 40;
     Main.CLICK_BUTTON = "CLICK_BUTTON";
+    Main.GAME_OVER = "GAME_OVER";
     Main.rayArray = [];
     return Main;
 }(eui.UILayer));

@@ -103,39 +103,138 @@ class Main extends eui.UILayer {
     public static rayWidth = 40;
     public static rayHeight = 40;
     public static readonly CLICK_BUTTON: string = "CLICK_BUTTON";
+    public static readonly GAME_OVER: string = "GAME_OVER";
     public static rayEvent: RayEvent;
+    // private aryArr: ray[][];
     protected createGameScene(): void {
         var lineNumber = Math.round(this.stage.stageWidth / Main.rayWidth) - 1;
         var columnNumber = Math.round(this.stage.stageHeight / Main.rayHeight) - 1;
         this.dArray(lineNumber, columnNumber);
         Main.rayEvent = new RayEvent();
+        // this.aryArr = [];
         for (let i = 0; i < lineNumber; i++) {
+            // this.aryArr.push(new Array())
             for (let j = 0; j < columnNumber; j++) {
+                // this.aryArr[i][j] = new ray(i, j, this.digui.bind(this))
                 this.addChild(new ray(i, j));
             }
         }
     }
+    // private digui(x, y): void {
+    //     if (x < 0 || y < 0 || !this.aryArr[x][y]) { return }
+    //     let num = Main.isCount(x - 1, y - 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x - 1, y - 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+
+    //     num = Main.isCount(x - 1, y);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x - 1, y);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+
+    //     num = Main.isCount(x - 1, y + 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x - 1, y + 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+
+    //     num = Main.isCount(x, y + 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x, y + 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+
+    //     num = Main.isCount(x + 1, y + 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x + 1, y + 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+
+    //     num = Main.isCount(x + 1, y);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x + 1, y);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+
+    //     num = Main.isCount(x + 1, y - 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+    //         this.digui(x + 1, y - 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+
+    //     num = Main.isCount(x, y - 1);
+    //     if (num >= 1) {
+    //         (this.aryArr[x][y] as ray).have(num);
+    //     } else {
+
+    //         this.digui(x, y - 1);
+    //         (this.aryArr[x][y] as ray).nohave();
+    //     }
+    // }
+    public static isray(x, y): boolean {
+        for (var i = 0; i < Main.rayArray.length; i++) {
+            if (x == Main.rayArray[i][0] && y == Main.rayArray[i][1]) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static isCount(x, y): number {
+        var num = 0;
+        if (Main.isray(x - 1, y - 1)) {
+            num++;
+        }
+        if (Main.isray(x - 1, y)) {
+            num++;
+        }
+        if (Main.isray(x - 1, y + 1)) {
+            num++;
+        }
+        if (Main.isray(x, y + 1)) {
+            num++;
+        }
+        if (Main.isray(x + 1, y + 1)) {
+            num++;
+        }
+        if (Main.isray(x + 1, y)) {
+            num++;
+        }
+        if (Main.isray(x + 1, y - 1)) {
+            num++;
+        }
+        if (Main.isray(x, y - 1)) {
+            num++;
+        }
+        return num;
+    }
     public static rayArray: number[][] = [];
     private dArray(line: number = 30, column: number = 30): void {
-        // var arr: any[][] = [];
-        // for (let i = 0; i < line; i++) {
-        //     arr.push(new Array<any>());
-        //     for (let j = 0; j < column; j++) {
-        //         arr[i].push({ i, j })
-        //     }
-        // }
-        // console.log(arr)
         var a: number[][] = [], x: number, y: number;
-        var ray = line * column * 0.15;
+        var ray =  line * column * 0.18;
         while (a.length < ray) {
-            x = this.randomRangeInt(0, line);
-            y = this.randomRangeInt(0, column);
+            x = this.randomRangeInt(0, line - 1);
+            y = this.randomRangeInt(0, column - 1);
             if (a.indexOf([x, y]) == -1) {
                 a.push([x, y])
             }
         }
         Main.rayArray = a;
-        console.log(Main.rayArray)
     }
     public randomRangeInt(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1)) + min;
