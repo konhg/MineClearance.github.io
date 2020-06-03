@@ -161,80 +161,20 @@ var Main = (function (_super) {
             }, _this);
         });
     };
-    // private aryArr: ray[][];
     Main.prototype.createGameScene = function () {
         var lineNumber = Math.round(this.stage.stageWidth / Main.rayWidth) - 1;
         var columnNumber = Math.round(this.stage.stageHeight / Main.rayHeight) - 1;
         this.dArray(lineNumber, columnNumber);
-        Main.rayEvent = new RayEvent();
-        // this.aryArr = [];
+        // Main.rayEvent = new RayEvent();
+        Main.rayArray1 = [];
         for (var i = 0; i < lineNumber; i++) {
-            // this.aryArr.push(new Array())
+            Main.rayArray1[i] = [];
             for (var j = 0; j < columnNumber; j++) {
-                // this.aryArr[i][j] = new ray(i, j, this.digui.bind(this))
-                this.addChild(new ray(i, j));
+                Main.rayArray1[i][j] = new ray(i, j);
+                this.addChild(Main.rayArray1[i][j]);
             }
         }
     };
-    // private digui(x, y): void {
-    //     if (x < 0 || y < 0 || !this.aryArr[x][y]) { return }
-    //     let num = Main.isCount(x - 1, y - 1);
-    //     if (num >= 1) {
-    //         (this.aryArr[x][y] as ray).have(num);
-    //     } else {
-    //         this.digui(x - 1, y - 1);
-    //         (this.aryArr[x][y] as ray).nohave();
-    //     }
-    //     num = Main.isCount(x - 1, y);
-    //     if (num >= 1) {
-    //         (this.aryArr[x][y] as ray).have(num);
-    //     } else {
-    //         this.digui(x - 1, y);
-    //         (this.aryArr[x][y] as ray).nohave();
-    //     }
-    //     num = Main.isCount(x - 1, y + 1);
-    //     if (num >= 1) {
-    //         (this.aryArr[x][y] as ray).have(num);
-    //     } else {
-    //         this.digui(x - 1, y + 1);
-    //         (this.aryArr[x][y] as ray).nohave();
-    //     }
-    //     num = Main.isCount(x, y + 1);
-    //     if (num >= 1) {
-    //         (this.aryArr[x][y] as ray).have(num);
-    //     } else {
-    //         this.digui(x, y + 1);
-    //         (this.aryArr[x][y] as ray).nohave();
-    //     }
-    //     num = Main.isCount(x + 1, y + 1);
-    //     if (num >= 1) {
-    //         (this.aryArr[x][y] as ray).have(num);
-    //     } else {
-    //         this.digui(x + 1, y + 1);
-    //         (this.aryArr[x][y] as ray).nohave();
-    //     }
-    //     num = Main.isCount(x + 1, y);
-    //     if (num >= 1) {
-    //         (this.aryArr[x][y] as ray).have(num);
-    //     } else {
-    //         this.digui(x + 1, y);
-    //         (this.aryArr[x][y] as ray).nohave();
-    //     }
-    //     num = Main.isCount(x + 1, y - 1);
-    //     if (num >= 1) {
-    //         (this.aryArr[x][y] as ray).have(num);
-    //     } else {
-    //         this.digui(x + 1, y - 1);
-    //         (this.aryArr[x][y] as ray).nohave();
-    //     }
-    //     num = Main.isCount(x, y - 1);
-    //     if (num >= 1) {
-    //         (this.aryArr[x][y] as ray).have(num);
-    //     } else {
-    //         this.digui(x, y - 1);
-    //         (this.aryArr[x][y] as ray).nohave();
-    //     }
-    // }
     Main.isray = function (x, y) {
         for (var i = 0; i < Main.rayArray.length; i++) {
             if (x == Main.rayArray[i][0] && y == Main.rayArray[i][1]) {
@@ -242,6 +182,43 @@ var Main = (function (_super) {
             }
         }
         return false;
+    };
+    Main.panduan = function (x, y) {
+        if (x < 0 || y < 0 || x > Main.rayArray1.length - 1 || y > Main.rayArray1[0].length - 1) {
+            return;
+        }
+        var ray;
+        ray = Main.rayArray1[x][y];
+        if (!ray) {
+            return;
+        }
+        if (!ray.flag) {
+            if (ray.raynumber == -1) {
+                ray.isRay();
+                return;
+            }
+            if (ray.raynumber > 0) {
+                ray.isNumber();
+                return;
+            }
+            if (ray.button.touchEnabled == false) {
+                return;
+            }
+            ray.isNull();
+            egret.Tween.get(ray).wait(100).call(function () {
+                Main.isNull(x, y);
+            }, this);
+        }
+    };
+    Main.isNull = function (x, y) {
+        Main.panduan(x - 1, y - 1);
+        Main.panduan(x - 1, y);
+        Main.panduan(x - 1, y + 1);
+        Main.panduan(x, y + 1);
+        Main.panduan(x + 1, y + 1);
+        Main.panduan(x + 1, y);
+        Main.panduan(x + 1, y - 1);
+        Main.panduan(x, y - 1);
     };
     Main.isCount = function (x, y) {
         var num = 0;
@@ -275,7 +252,7 @@ var Main = (function (_super) {
         if (line === void 0) { line = 30; }
         if (column === void 0) { column = 30; }
         var a = [], x, y;
-        var ray = line * column * 0.18;
+        var ray = 20; //line * column * 0.18;
         while (a.length < ray) {
             x = this.randomRangeInt(0, line - 1);
             y = this.randomRangeInt(0, column - 1);
@@ -342,8 +319,6 @@ var Main = (function (_super) {
      */
     Main.rayWidth = 40;
     Main.rayHeight = 40;
-    Main.CLICK_BUTTON = "CLICK_BUTTON";
-    Main.GAME_OVER = "GAME_OVER";
     Main.rayArray = [];
     return Main;
 }(eui.UILayer));
