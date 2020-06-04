@@ -193,7 +193,7 @@ class Main extends eui.UILayer {
     public static rayArray: number[][] = [];
     private dArray(line: number = 30, column: number = 30): void {
         var a: number[][] = [], x: number, y: number;
-        var ray = 20//line * column * 0.18;
+        var ray = line * column * 0.18;
         while (a.length < ray) {
             x = this.randomRangeInt(0, line - 1);
             y = this.randomRangeInt(0, column - 1);

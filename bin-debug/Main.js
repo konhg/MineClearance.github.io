@@ -252,7 +252,7 @@ var Main = (function (_super) {
         if (line === void 0) { line = 30; }
         if (column === void 0) { column = 30; }
         var a = [], x, y;
-        var ray = 20; //line * column * 0.18;
+        var ray = line * column * 0.18;
         while (a.length < ray) {
             x = this.randomRangeInt(0, line - 1);
             y = this.randomRangeInt(0, column - 1);

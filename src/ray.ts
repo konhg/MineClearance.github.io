@@ -83,7 +83,7 @@ class ray extends eui.UILayer {
 			this.button.addEventListener(egret.TouchEvent.TOUCH_END, this.onButtonClick, this);
 			return;
 		}
-		egret.Tween.get(this.button).wait(1000).call(() => {
+		egret.Tween.get(this.button).wait(500).call(() => {
 			this.flag = true;
 			this.button.label = "旗";
 			(<eui.Label>this.button.labelDisplay).textColor = 0x00ff00;

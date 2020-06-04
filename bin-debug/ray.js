@@ -93,7 +93,7 @@ var ray = (function (_super) {
             this.button.addEventListener(egret.TouchEvent.TOUCH_END, this.onButtonClick, this);
             return;
         }
-        egret.Tween.get(this.button).wait(1000).call(function () {
+        egret.Tween.get(this.button).wait(500).call(function () {
             _this.flag = true;
             _this.button.label = "旗";
             _this.button.labelDisplay.textColor = 0x00ff00;
